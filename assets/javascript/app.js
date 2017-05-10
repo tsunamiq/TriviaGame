@@ -4,26 +4,43 @@ $(document).ready(function(){
 //==========================================
 //                Variable Declarations
 //==========================================
+
 var questions = [
-   q0 = {
+  {
     question:"What's Spider Man's human name?",
-    answers: ["Peter Parker", "name1","name2", "name3"],
+    answers: ["Peter Parker", "Carol Jason","Werner Bator", "Lamar Willer"],
     correctAnswer: "Peter Parker"
   },
-   q1 = {
-    question:"What's Wolverine real name?",
-    answers: ["James Howlett", "name1","name2", "name3"],
-    correctAnswer: "James Howlett"
+  {
+    question:"What is material of Wolverine's Bones?",
+    answers: ["Titanium", "Adamantium","Molten Cobalt", "Tantalum"],
+    correctAnswer: "Adamantium"
+  },
+  {
+    question:"Who consumes Jean Grey near the end of her life and becomes her final form?",
+    answers: ["Rouge", "Carnegie","Storm", "Phoenix"],
+    correctAnswer: "Phoenix"
+  },
+  {
+    question:"What is the name of iron man's side kick?",
+    answers: ["Sentinel", "Baymax","War Machine", "Destroyer"],
+    correctAnswer: "War Machine"
+  },
+  {
+    question:"Which of the following character is nick named the 'Merc with a Mouth'",
+    answers: ["Loki", "Dead Pool","Star Lord", "Groot"],
+    correctAnswer: "Dead Pool"
   }
 ]
 
 var qCount = 0;
-var qCountMax = 2;
+var qCountMax = questions.length;
 var timeNum;
 var correct = 0; 
 var incorrect = 0; 
 
 console.log(questions[0].question);
+console.log("array length: " +questions.length);
 
 
 
@@ -47,13 +64,16 @@ function questionStart(){
   $(".content").text("");
 
   //Start Timer
-  timeNum = 15;
+  timeNum = 5;
   timer();
 
   // Qcount eval
-  if(qCount==qCountMax){
+  console.log("array length: " +questions.length);
+  console.log("qCount: " +qCount);
+  if(qCount===qCountMax){
     //reset
     clearInterval(timeId);
+    
     results();
     return;
   }
@@ -124,18 +144,9 @@ function timeEval(){
       $("<h2>").text("The correct answer was: "+ questions[qCount].correctAnswer).appendTo(".content");
       timeNum = 15;
       qCount++;
-
-      // qCount counts questions. Out of questions = game over
-      if(qCount==qCountMax){
-        setTimeout(function(){
-          $(".timer").text("");
-          $(".content").text("");
-          $("<h1>").text("GameOver!").appendTo(".content");
-          return;
-          }, 3000);
-      }else{
-        setTimeout(function(){questionStart()},3000);
-      };
+      incorrect++;
+      setTimeout(function(){questionStart()},3000);
+    
     }
 }
 
@@ -182,11 +193,31 @@ function clickEval(clickevt){
     $(".content").text("");
     $("<h1>").text("Correct Answer!").appendTo(".content");
     
+    var img = $("<img>");
+    var i;
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q="+encodeURIComponent(questions[qCount].correctAnswer)+"&api_key=dc6zaTOxFJmzC";
+    $.ajax({
+      url: queryURL,
+      method: 'GET'
+    }).done(function(giphy) {
+        console.log(giphy);
+        console.log("qCount: " + qCount);
+        if(qCount === 1 || qCount === 5 ){
+          i = giphy.data[1].images["fixed_height"].url;
+        }else{
+          i = giphy.data[0].images["fixed_height"].url;
+        }
+          if(i.indexOf("http") == 0)
+            img.attr("src",i);
+          
+    });
+    img.appendTo(".content");
+
     console.log("current qCount: " + qCount);
-      setTimeout(function(){questionStart()},3000);
-      qCount++;
-      correct++; 
-      
+    setTimeout(function(){questionStart()},4000);
+    qCount++;
+    correct++; 
+    
   }else{
     $(".timer").text("");
     $(".content").text("");
@@ -218,18 +249,27 @@ function results(){
 }
 
 //==========================================
-//                Reset     
+//                Reset     in object
 //==========================================
 
 $(document).on("click",".reset",function(){
   qCount = 0;
-  qCountMax = 2;
-  timeNum;
   correct = 0; 
   incorrect = 0;
   questionStart();
 
 });
+
+//==========================================
+//                Ajax     
+//==========================================
+
+
+
+
+
+
+
 
 
 
