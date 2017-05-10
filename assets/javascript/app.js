@@ -195,7 +195,7 @@ function clickEval(clickevt){
     
     var img = $("<img>");
     var i;
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q="+encodeURIComponent(questions[qCount].correctAnswer)+"&api_key=dc6zaTOxFJmzC";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+encodeURIComponent(questions[qCount].correctAnswer)+"&api_key=dc6zaTOxFJmzC";
     $.ajax({
       url: queryURL,
       method: 'GET'
