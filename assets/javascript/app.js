@@ -64,7 +64,7 @@ function questionStart(){
   $(".content").text("");
 
   //Start Timer
-  timeNum = 5;
+  timeNum = 10;
   timer();
 
   // Qcount eval
@@ -112,7 +112,10 @@ function timer(){
   var timerBody = $("<div>").addClass("panel-body").appendTo(timerPanel);
 
   // Timing Algorithms and display
-  $(timerBody).text("00:05");
+  $(timerBody).text("00:10");
+
+
+  
   timeId = setInterval(function(){ 
     timeNum-- ;
     if(timeNum>9){
@@ -142,7 +145,7 @@ function timeEval(){
       $(".content").text("");
       $("<h1>").text("You're Out of Time!").appendTo(".content");
       $("<h2>").text("The correct answer was: "+ questions[qCount].correctAnswer).appendTo(".content");
-      timeNum = 15;
+      timeNum = 10;
       qCount++;
       incorrect++;
       setTimeout(function(){questionStart()},3000);
